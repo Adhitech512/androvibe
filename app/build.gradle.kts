@@ -62,8 +62,9 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // Sora Text Editor (Native Android Code Editor with LSP support)
-    implementation("io.github.rosemoe.sora-editor:editor:0.23.3")
-    implementation("io.github.rosemoe.sora-editor:language-textmate:0.23.3")
+    implementation(platform("io.github.rosemoe:editor-bom:0.23.3"))
+    implementation("io.github.rosemoe:editor")
+    implementation("io.github.rosemoe:language-textmate")
 
     // JGit for Git cloning directly inside the app
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.8.0.202311291450-r")

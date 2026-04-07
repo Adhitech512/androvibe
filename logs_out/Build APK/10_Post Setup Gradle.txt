@@ -1,0 +1,28 @@
+﻿2026-04-07T11:24:02.6224422Z Post job cleanup.
+2026-04-07T11:24:02.8661037Z In post-action step
+2026-04-07T11:24:02.8670217Z Stopping all Gradle daemons before saving Gradle User Home state
+2026-04-07T11:24:02.8671536Z Stopping Gradle daemons for /home/runner/gradle-installations/installs/gradle-8.5
+2026-04-07T11:24:02.8691035Z [command]/home/runner/gradle-installations/installs/gradle-8.5/bin/gradle --stop
+2026-04-07T11:24:03.7487869Z Stopping Daemon(s)
+2026-04-07T11:24:03.7488341Z 1 Daemon stopped
+2026-04-07T11:24:03.7625005Z ##[group]Caching Gradle state
+2026-04-07T11:24:03.7824662Z Caching generated-gradle-jars with path '/home/runner/.gradle/caches/8.5/generated-gradle-jars/gradle-api-8.5.jar' and cache key: gradle-generated-gradle-jars-v1-fa001ab82c3596b4e27ec78f191b889f
+2026-04-07T11:24:03.7977186Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/androvibe/androvibe --files-from manifest.txt --use-compress-program zstdmt
+2026-04-07T11:24:04.2548953Z Caching dependencies with path '/home/runner/.gradle/caches/modules-*/files-*/*/*/*/*' and cache key: gradle-dependencies-v1-f3358eaf93ddfa854e8c22b281534c50
+2026-04-07T11:24:04.3606683Z Caching instrumented-jars with path '/home/runner/.gradle/caches/jars-*/*/' and cache key: gradle-instrumented-jars-v1-d4ea5b33f866b9d21873f86c8c33fba6
+2026-04-07T11:24:04.3752553Z ##[warning]Failed to save cache entry with path '/home/runner/.gradle/caches/8.5/generated-gradle-jars/gradle-api-8.5.jar' and key: gradle-generated-gradle-jars-v1-fa001ab82c3596b4e27ec78f191b889f: Error: <h2>Our services aren't available right now</h2><p>We're working to restore all services as soon as possible. Please check back soon.</p>0VOnUaQAAAACKE+xoECYeTL2A5D/+uoY7UEhMMzBFREdFMDQxOABFZGdl
+2026-04-07T11:24:04.4159397Z Caching kotlin-dsl with path '/home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/
+2026-04-07T11:24:04.4160619Z /home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/' and cache key: gradle-kotlin-dsl-v1-51a4d3a4d1172a488dac60690876619d
+2026-04-07T11:24:04.4489196Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/androvibe/androvibe --files-from manifest.txt --use-compress-program zstdmt
+2026-04-07T11:24:04.5017521Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/androvibe/androvibe --files-from manifest.txt --use-compress-program zstdmt
+2026-04-07T11:24:04.5539496Z ##[warning]Failed to save cache entry with path '/home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/
+/home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/' and key: gradle-kotlin-dsl-v1-51a4d3a4d1172a488dac60690876619d: Error: <h2>Our services aren't available right now</h2><p>We're working to restore all services as soon as possible. Please check back soon.</p>0VOnUaQAAAABZ0RGZqhtoRbsAkqgQLCGuUEhMMzBFREdFMDQxNgBFZGdl
+2026-04-07T11:24:04.8924731Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/androvibe/androvibe --files-from manifest.txt --use-compress-program zstdmt
+2026-04-07T11:24:05.6484926Z ##[warning]Failed to save cache entry with path '/home/runner/.gradle/caches/modules-*/files-*/*/*/*/*' and key: gradle-dependencies-v1-f3358eaf93ddfa854e8c22b281534c50: Error: <h2>Our services aren't available right now</h2><p>We're working to restore all services as soon as possible. Please check back soon.</p>0VenUaQAAAACYeUPyveroSZmJi7uInp02UEhMMzBFREdFMDExOQBFZGdl
+2026-04-07T11:24:05.8515988Z ##[warning]Failed to save cache entry with path '/home/runner/.gradle/caches/jars-*/*/' and key: gradle-instrumented-jars-v1-d4ea5b33f866b9d21873f86c8c33fba6: Error: <h2>Our services aren't available right now</h2><p>We're working to restore all services as soon as possible. Please check back soon.</p>0VenUaQAAAAD7u3r/QFHXSaq2/j/kh3jsUEhMMzBFREdFMDQwOQBFZGdl
+2026-04-07T11:24:05.9414040Z Caching Gradle User Home with cache key: gradle-home-v1|Linux|build[81c9dbb0e8e1df9c460cd196c993774b]-ee87ceaa68440d3357cd9935a71603ce12156ec6
+2026-04-07T11:24:05.9494362Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/androvibe/androvibe --files-from manifest.txt --use-compress-program zstdmt
+2026-04-07T11:24:06.0665626Z ##[warning]Failed to save cache entry with path '/home/runner/.gradle/caches,/home/runner/.gradle/notifications,/home/runner/.gradle/.setup-gradle' and key: gradle-home-v1|Linux|build[81c9dbb0e8e1df9c460cd196c993774b]-ee87ceaa68440d3357cd9935a71603ce12156ec6: Error: <h2>Our services aren't available right now</h2><p>We're working to restore all services as soon as possible. Please check back soon.</p>0VunUaQAAAADm0Vp+mfHVTKjjDSGXP81RUEhMMzBFREdFMDIwOABFZGdl
+2026-04-07T11:24:06.0670338Z ##[endgroup]
+2026-04-07T11:24:06.0670602Z Generating Job Summary
+2026-04-07T11:24:06.0687247Z Completed post-action step

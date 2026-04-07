@@ -1,0 +1,59 @@
+﻿2026-04-07T11:22:58.8498940Z ##[group]Run gradle assembleDebug
+2026-04-07T11:22:58.8499311Z [36;1mgradle assembleDebug[0m
+2026-04-07T11:22:58.8529620Z shell: /usr/bin/bash -e {0}
+2026-04-07T11:22:58.8529893Z env:
+2026-04-07T11:22:58.8530207Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-04-07T11:22:58.8530687Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-04-07T11:22:58.8531098Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-04-07T11:22:58.8531414Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-04-07T11:22:58.8531733Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-04-07T11:22:58.8532156Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-04-07T11:22:58.8532628Z   DEVELOCITY_AUTO_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-04-07T11:22:58.8532961Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-04-07T11:22:58.8533519Z ##[endgroup]
+2026-04-07T11:22:59.3952643Z 
+2026-04-07T11:22:59.3984259Z Welcome to Gradle 8.5!
+2026-04-07T11:22:59.3984691Z 
+2026-04-07T11:22:59.3984884Z Here are the highlights of this release:
+2026-04-07T11:22:59.3985387Z  - Support for running on Java 21
+2026-04-07T11:22:59.3985863Z  - Faster first use with Kotlin DSL
+2026-04-07T11:22:59.3989377Z  - Improved error and warning messages
+2026-04-07T11:22:59.3989763Z 
+2026-04-07T11:22:59.3990139Z For more details see https://docs.gradle.org/8.5/release-notes.html
+2026-04-07T11:22:59.3990694Z 
+2026-04-07T11:22:59.4943804Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-04-07T11:23:54.0000817Z > Task :app:preBuild UP-TO-DATE
+2026-04-07T11:23:54.0003632Z > Task :app:preDebugBuild UP-TO-DATE
+2026-04-07T11:23:54.0004309Z > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+2026-04-07T11:23:54.0005045Z > Task :app:checkKotlinGradlePluginConfigurationErrors
+2026-04-07T11:24:02.0939169Z > Task :app:checkDebugAarMetadata FAILED
+2026-04-07T11:24:02.1976274Z 
+2026-04-07T11:24:02.1985101Z FAILURE: Build failed with an exception.
+2026-04-07T11:24:02.1985536Z 
+2026-04-07T11:24:02.1985699Z * What went wrong:
+2026-04-07T11:24:02.1986124Z Execution failed for task ':app:checkDebugAarMetadata'.
+2026-04-07T11:24:02.1986802Z > Could not resolve all files for configuration ':app:debugRuntimeClasspath'.
+2026-04-07T11:24:02.1987528Z    > Could not find io.github.rosemoe.sora-editor:editor:0.23.3.
+2026-04-07T11:24:02.1988078Z      Searched in the following locations:
+2026-04-07T11:24:02.1988898Z        - https://dl.google.com/dl/android/maven2/io/github/rosemoe/sora-editor/editor/0.23.3/editor-0.23.3.pom
+2026-04-07T11:24:02.1990257Z        - https://repo.maven.apache.org/maven2/io/github/rosemoe/sora-editor/editor/0.23.3/editor-0.23.3.pom
+2026-04-07T11:24:02.1991291Z        - https://jitpack.io/io/github/rosemoe/sora-editor/editor/0.23.3/editor-0.23.3.pom
+2026-04-07T11:24:02.1992888Z      Required by:
+2026-04-07T11:24:02.1993489Z          project :app
+2026-04-07T11:24:02.2006671Z    > Could not find io.github.rosemoe.sora-editor:language-textmate:0.23.3.
+2026-04-07T11:24:02.2007424Z      Searched in the following locations:
+2026-04-07T11:24:02.2008477Z        - https://dl.google.com/dl/android/maven2/io/github/rosemoe/sora-editor/language-textmate/0.23.3/language-textmate-0.23.3.pom
+2026-04-07T11:24:02.2010075Z        - https://repo.maven.apache.org/maven2/io/github/rosemoe/sora-editor/language-textmate/0.23.3/language-textmate-0.23.3.pom
+2026-04-07T11:24:02.2011511Z        - https://jitpack.io/io/github/rosemoe/sora-editor/language-textmate/0.23.3/language-textmate-0.23.3.pom
+2026-04-07T11:24:02.2012793Z      Required by:
+2026-04-07T11:24:02.2036331Z          project :app
+2026-04-07T11:24:02.2036690Z 
+2026-04-07T11:24:02.2036825Z * Try:
+2026-04-07T11:24:02.2037331Z > Run with --stacktrace option to get the stack trace.
+2026-04-07T11:24:02.2037990Z > Run with --info or --debug option to get more log output.
+2026-04-07T11:24:02.2038555Z > Run with --scan to get full insights.
+2026-04-07T11:24:02.2039047Z > Get more help at https://help.gradle.org.
+2026-04-07T11:24:02.2039394Z 
+2026-04-07T11:24:02.2039927Z BUILD FAILED in 1m 3s
+2026-04-07T11:24:02.2040305Z 2 actionable tasks: 2 executed
+2026-04-07T11:24:02.6065363Z ##[error]Process completed with exit code 1.
