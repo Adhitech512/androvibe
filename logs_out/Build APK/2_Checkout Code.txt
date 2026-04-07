@@ -1,72 +1,72 @@
-﻿2026-04-07T13:49:18.0675747Z ##[group]Run actions/checkout@v4
-2026-04-07T13:49:18.0677150Z with:
-2026-04-07T13:49:18.0677900Z   repository: Adhitech512/androvibe
-2026-04-07T13:49:18.0679240Z   token: ***
-2026-04-07T13:49:18.0679964Z   ssh-strict: true
-2026-04-07T13:49:18.0680736Z   ssh-user: git
-2026-04-07T13:49:18.0681528Z   persist-credentials: true
-2026-04-07T13:49:18.0682404Z   clean: true
-2026-04-07T13:49:18.0683200Z   sparse-checkout-cone-mode: true
-2026-04-07T13:49:18.0684149Z   fetch-depth: 1
-2026-04-07T13:49:18.0684916Z   fetch-tags: false
-2026-04-07T13:49:18.0685894Z   show-progress: true
-2026-04-07T13:49:18.0686697Z   lfs: false
-2026-04-07T13:49:18.0687424Z   submodules: false
-2026-04-07T13:49:18.0688241Z   set-safe-directory: true
-2026-04-07T13:49:18.0689407Z ##[endgroup]
-2026-04-07T13:49:18.1812361Z Syncing repository: Adhitech512/androvibe
-2026-04-07T13:49:18.1815604Z ##[group]Getting Git version info
-2026-04-07T13:49:18.1816988Z Working directory is '/home/runner/work/androvibe/androvibe'
-2026-04-07T13:49:18.1818833Z [command]/usr/bin/git version
-2026-04-07T13:49:18.1845843Z git version 2.53.0
-2026-04-07T13:49:18.1872951Z ##[endgroup]
-2026-04-07T13:49:18.1889928Z Temporarily overriding HOME='/home/runner/work/_temp/2e30ba97-5758-4456-b66f-c5adf18b7e54' before making global git config changes
-2026-04-07T13:49:18.1893178Z Adding repository directory to the temporary git global config as a safe directory
-2026-04-07T13:49:18.1903538Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/androvibe/androvibe
-2026-04-07T13:49:18.1939798Z Deleting the contents of '/home/runner/work/androvibe/androvibe'
-2026-04-07T13:49:18.1943898Z ##[group]Initializing the repository
-2026-04-07T13:49:18.1948411Z [command]/usr/bin/git init /home/runner/work/androvibe/androvibe
-2026-04-07T13:49:18.2050843Z hint: Using 'master' as the name for the initial branch. This default branch name
-2026-04-07T13:49:18.2053656Z hint: will change to "main" in Git 3.0. To configure the initial branch name
-2026-04-07T13:49:18.2056413Z hint: to use in all of your new repositories, which will suppress this warning,
-2026-04-07T13:49:18.2058074Z hint: call:
-2026-04-07T13:49:18.2058786Z hint:
-2026-04-07T13:49:18.2059993Z hint: 	git config --global init.defaultBranch <name>
-2026-04-07T13:49:18.2061120Z hint:
-2026-04-07T13:49:18.2062146Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-2026-04-07T13:49:18.2063895Z hint: 'development'. The just-created branch can be renamed via this command:
-2026-04-07T13:49:18.2065857Z hint:
-2026-04-07T13:49:18.2066610Z hint: 	git branch -m <name>
-2026-04-07T13:49:18.2067443Z hint:
-2026-04-07T13:49:18.2068576Z hint: Disable this message with "git config set advice.defaultBranchName false"
-2026-04-07T13:49:18.2070499Z Initialized empty Git repository in /home/runner/work/androvibe/androvibe/.git/
-2026-04-07T13:49:18.2073885Z [command]/usr/bin/git remote add origin https://github.com/Adhitech512/androvibe
-2026-04-07T13:49:18.2100779Z ##[endgroup]
-2026-04-07T13:49:18.2102149Z ##[group]Disabling automatic garbage collection
-2026-04-07T13:49:18.2106731Z [command]/usr/bin/git config --local gc.auto 0
-2026-04-07T13:49:18.2136423Z ##[endgroup]
-2026-04-07T13:49:18.2137736Z ##[group]Setting up auth
-2026-04-07T13:49:18.2142711Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-2026-04-07T13:49:18.2174605Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-2026-04-07T13:49:18.2463664Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-2026-04-07T13:49:18.2494372Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
-2026-04-07T13:49:18.2719761Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
-2026-04-07T13:49:18.2762940Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
-2026-04-07T13:49:18.2989748Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
-2026-04-07T13:49:18.3024524Z ##[endgroup]
-2026-04-07T13:49:18.3026416Z ##[group]Fetching the repository
-2026-04-07T13:49:18.3033744Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +9284fc8fe71b5e53e56f6798bfc5177c30806e8d:refs/remotes/origin/main
-2026-04-07T13:49:18.4867630Z From https://github.com/Adhitech512/androvibe
-2026-04-07T13:49:18.4870115Z  * [new ref]         9284fc8fe71b5e53e56f6798bfc5177c30806e8d -> origin/main
-2026-04-07T13:49:18.4899361Z ##[endgroup]
-2026-04-07T13:49:18.4901436Z ##[group]Determining the checkout info
-2026-04-07T13:49:18.4903484Z ##[endgroup]
-2026-04-07T13:49:18.4905831Z [command]/usr/bin/git sparse-checkout disable
-2026-04-07T13:49:18.4943706Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
-2026-04-07T13:49:18.4971286Z ##[group]Checking out the ref
-2026-04-07T13:49:18.4974779Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
-2026-04-07T13:49:18.5038196Z Switched to a new branch 'main'
-2026-04-07T13:49:18.5040247Z branch 'main' set up to track 'origin/main'.
-2026-04-07T13:49:18.5047744Z ##[endgroup]
-2026-04-07T13:49:18.5081121Z [command]/usr/bin/git log -1 --format=%H
-2026-04-07T13:49:18.5103947Z 9284fc8fe71b5e53e56f6798bfc5177c30806e8d
+﻿2026-04-07T13:59:46.1045305Z ##[group]Run actions/checkout@v4
+2026-04-07T13:59:46.1045963Z with:
+2026-04-07T13:59:46.1046226Z   repository: Adhitech512/androvibe
+2026-04-07T13:59:46.1046914Z   token: ***
+2026-04-07T13:59:46.1047154Z   ssh-strict: true
+2026-04-07T13:59:46.1047386Z   ssh-user: git
+2026-04-07T13:59:46.1047622Z   persist-credentials: true
+2026-04-07T13:59:46.1047889Z   clean: true
+2026-04-07T13:59:46.1048124Z   sparse-checkout-cone-mode: true
+2026-04-07T13:59:46.1048411Z   fetch-depth: 1
+2026-04-07T13:59:46.1048629Z   fetch-tags: false
+2026-04-07T13:59:46.1048914Z   show-progress: true
+2026-04-07T13:59:46.1049166Z   lfs: false
+2026-04-07T13:59:46.1049387Z   submodules: false
+2026-04-07T13:59:46.1049630Z   set-safe-directory: true
+2026-04-07T13:59:46.1050149Z ##[endgroup]
+2026-04-07T13:59:46.2177771Z Syncing repository: Adhitech512/androvibe
+2026-04-07T13:59:46.2179208Z ##[group]Getting Git version info
+2026-04-07T13:59:46.2179658Z Working directory is '/home/runner/work/androvibe/androvibe'
+2026-04-07T13:59:46.2180254Z [command]/usr/bin/git version
+2026-04-07T13:59:46.2238978Z git version 2.53.0
+2026-04-07T13:59:46.2265209Z ##[endgroup]
+2026-04-07T13:59:46.2279246Z Temporarily overriding HOME='/home/runner/work/_temp/a4dfab15-56be-4fe6-86ba-bdbd7f818b15' before making global git config changes
+2026-04-07T13:59:46.2280155Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-07T13:59:46.2293145Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/androvibe/androvibe
+2026-04-07T13:59:46.2329936Z Deleting the contents of '/home/runner/work/androvibe/androvibe'
+2026-04-07T13:59:46.2334636Z ##[group]Initializing the repository
+2026-04-07T13:59:46.2339399Z [command]/usr/bin/git init /home/runner/work/androvibe/androvibe
+2026-04-07T13:59:46.2469647Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-04-07T13:59:46.2471958Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-04-07T13:59:46.2474488Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-04-07T13:59:46.2475299Z hint: call:
+2026-04-07T13:59:46.2475715Z hint:
+2026-04-07T13:59:46.2476269Z hint: 	git config --global init.defaultBranch <name>
+2026-04-07T13:59:46.2477261Z hint:
+2026-04-07T13:59:46.2477873Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-04-07T13:59:46.2478857Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-04-07T13:59:46.2479624Z hint:
+2026-04-07T13:59:46.2480126Z hint: 	git branch -m <name>
+2026-04-07T13:59:46.2480624Z hint:
+2026-04-07T13:59:46.2481293Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-04-07T13:59:46.2482447Z Initialized empty Git repository in /home/runner/work/androvibe/androvibe/.git/
+2026-04-07T13:59:46.2485248Z [command]/usr/bin/git remote add origin https://github.com/Adhitech512/androvibe
+2026-04-07T13:59:46.2514301Z ##[endgroup]
+2026-04-07T13:59:46.2515144Z ##[group]Disabling automatic garbage collection
+2026-04-07T13:59:46.2519293Z [command]/usr/bin/git config --local gc.auto 0
+2026-04-07T13:59:46.2549405Z ##[endgroup]
+2026-04-07T13:59:46.2562781Z ##[group]Setting up auth
+2026-04-07T13:59:46.2563508Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-07T13:59:46.2589822Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-07T13:59:46.2915730Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-04-07T13:59:46.2944550Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-04-07T13:59:46.3160091Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-04-07T13:59:46.3190384Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-04-07T13:59:46.3422528Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-04-07T13:59:46.3456438Z ##[endgroup]
+2026-04-07T13:59:46.3457518Z ##[group]Fetching the repository
+2026-04-07T13:59:46.3465287Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +4cd2a358548afa707c95b03cbea5efd9b8bb1237:refs/remotes/origin/main
+2026-04-07T13:59:46.6272606Z From https://github.com/Adhitech512/androvibe
+2026-04-07T13:59:46.6273603Z  * [new ref]         4cd2a358548afa707c95b03cbea5efd9b8bb1237 -> origin/main
+2026-04-07T13:59:46.6303122Z ##[endgroup]
+2026-04-07T13:59:46.6305371Z ##[group]Determining the checkout info
+2026-04-07T13:59:46.6310656Z ##[endgroup]
+2026-04-07T13:59:46.6311859Z [command]/usr/bin/git sparse-checkout disable
+2026-04-07T13:59:46.6352069Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-04-07T13:59:46.6381608Z ##[group]Checking out the ref
+2026-04-07T13:59:46.6387526Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-04-07T13:59:46.6459362Z Switched to a new branch 'main'
+2026-04-07T13:59:46.6462418Z branch 'main' set up to track 'origin/main'.
+2026-04-07T13:59:46.6474764Z ##[endgroup]
+2026-04-07T13:59:46.6521975Z [command]/usr/bin/git log -1 --format=%H
+2026-04-07T13:59:46.6557664Z 4cd2a358548afa707c95b03cbea5efd9b8bb1237

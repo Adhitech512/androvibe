@@ -1,57 +1,54 @@
-﻿2026-04-07T13:49:21.6676998Z ##[group]Run gradle assembleDebug
-2026-04-07T13:49:21.6677397Z [36;1mgradle assembleDebug[0m
-2026-04-07T13:49:21.6707872Z shell: /usr/bin/bash -e {0}
-2026-04-07T13:49:21.6708146Z env:
-2026-04-07T13:49:21.6708445Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
-2026-04-07T13:49:21.6708926Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
-2026-04-07T13:49:21.6709321Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
-2026-04-07T13:49:21.6709625Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
-2026-04-07T13:49:21.6709924Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
-2026-04-07T13:49:21.6710354Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
-2026-04-07T13:49:21.6710848Z   DEVELOCITY_AUTO_INJECTION_CUSTOM_VALUE: gradle-actions
-2026-04-07T13:49:21.6711165Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
-2026-04-07T13:49:21.6711410Z ##[endgroup]
-2026-04-07T13:49:22.8320867Z 
-2026-04-07T13:49:22.8322182Z Welcome to Gradle 8.5!
-2026-04-07T13:49:22.8322646Z 
-2026-04-07T13:49:22.8323696Z Here are the highlights of this release:
-2026-04-07T13:49:22.8325842Z  - Support for running on Java 21
-2026-04-07T13:49:22.8327536Z  - Faster first use with Kotlin DSL
-2026-04-07T13:49:22.8329855Z  - Improved error and warning messages
-2026-04-07T13:49:22.8330221Z 
-2026-04-07T13:49:22.8331828Z For more details see https://docs.gradle.org/8.5/release-notes.html
-2026-04-07T13:49:22.8332591Z 
-2026-04-07T13:49:23.3316300Z Starting a Gradle Daemon (subsequent builds will be faster)
-2026-04-07T13:50:21.3376283Z > Task :app:preBuild UP-TO-DATE
-2026-04-07T13:50:21.3405775Z > Task :app:preDebugBuild UP-TO-DATE
-2026-04-07T13:50:21.3408652Z > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
-2026-04-07T13:50:21.3410599Z > Task :app:checkKotlinGradlePluginConfigurationErrors
-2026-04-07T13:50:31.8308666Z > Task :app:checkDebugAarMetadata FAILED
-2026-04-07T13:50:31.9306053Z 
-2026-04-07T13:50:31.9312517Z FAILURE: Build failed with an exception.
-2026-04-07T13:50:31.9315551Z 
-2026-04-07T13:50:31.9315842Z * What went wrong:
-2026-04-07T13:50:31.9316364Z Execution failed for task ':app:checkDebugAarMetadata'.
-2026-04-07T13:50:31.9318581Z > Could not resolve all files for configuration ':app:debugRuntimeClasspath'.
-2026-04-07T13:50:31.9356246Z    > Could not resolve io.github.rosemoe:editor-bom:0.23.3.
-2026-04-07T13:50:31.9364941Z      Required by:
-2026-04-07T13:50:31.9367326Z          project :app
-2026-04-07T13:50:31.9367807Z       > Could not resolve io.github.rosemoe:editor-bom:0.23.3.
-2026-04-07T13:50:31.9368854Z          > Could not get resource 'https://jitpack.io/io/github/rosemoe/editor-bom/0.23.3/editor-bom-0.23.3.pom'.
-2026-04-07T13:50:31.9370340Z             > Could not GET 'https://jitpack.io/io/github/rosemoe/editor-bom/0.23.3/editor-bom-0.23.3.pom'. Received status code 401 from server: Unauthorized
-2026-04-07T13:50:31.9371485Z    > Could not find io.github.rosemoe:editor:.
-2026-04-07T13:50:31.9371967Z      Required by:
-2026-04-07T13:50:31.9372293Z          project :app
-2026-04-07T13:50:31.9372770Z    > Could not find io.github.rosemoe:language-textmate:.
-2026-04-07T13:50:31.9373270Z      Required by:
-2026-04-07T13:50:31.9373576Z          project :app
-2026-04-07T13:50:31.9373786Z 
-2026-04-07T13:50:31.9373894Z * Try:
-2026-04-07T13:50:31.9374258Z > Run with --stacktrace option to get the stack trace.
-2026-04-07T13:50:31.9374852Z > Run with --info or --debug option to get more log output.
-2026-04-07T13:50:31.9375622Z > Run with --scan to get full insights.
-2026-04-07T13:50:31.9376147Z > Get more help at https://help.gradle.org.
-2026-04-07T13:50:31.9376838Z 
-2026-04-07T13:50:31.9376977Z BUILD FAILED in 1m 10s
-2026-04-07T13:50:31.9379216Z 2 actionable tasks: 2 executed
-2026-04-07T13:50:32.3339016Z ##[error]Process completed with exit code 1.
+﻿2026-04-07T13:59:51.2215269Z ##[group]Run gradle assembleDebug
+2026-04-07T13:59:51.2215652Z [36;1mgradle assembleDebug[0m
+2026-04-07T13:59:51.2245289Z shell: /usr/bin/bash -e {0}
+2026-04-07T13:59:51.2245569Z env:
+2026-04-07T13:59:51.2245894Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-04-07T13:59:51.2246405Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-04-07T13:59:51.2247231Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-04-07T13:59:51.2247557Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-04-07T13:59:51.2247887Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-04-07T13:59:51.2248317Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-04-07T13:59:51.2248800Z   DEVELOCITY_AUTO_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-04-07T13:59:51.2249140Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-04-07T13:59:51.2249394Z ##[endgroup]
+2026-04-07T13:59:52.0832926Z 
+2026-04-07T13:59:52.0833455Z Welcome to Gradle 8.5!
+2026-04-07T13:59:52.0833893Z 
+2026-04-07T13:59:52.0834097Z Here are the highlights of this release:
+2026-04-07T13:59:52.0834655Z  - Support for running on Java 21
+2026-04-07T13:59:52.0835149Z  - Faster first use with Kotlin DSL
+2026-04-07T13:59:52.0835611Z  - Improved error and warning messages
+2026-04-07T13:59:52.0835935Z 
+2026-04-07T13:59:52.0836269Z For more details see https://docs.gradle.org/8.5/release-notes.html
+2026-04-07T13:59:52.0838222Z 
+2026-04-07T13:59:52.4804825Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-04-07T14:00:49.1827203Z > Task :app:preBuild UP-TO-DATE
+2026-04-07T14:00:49.2804935Z > Task :app:preDebugBuild UP-TO-DATE
+2026-04-07T14:00:49.2808147Z > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+2026-04-07T14:00:49.2809624Z > Task :app:checkKotlinGradlePluginConfigurationErrors
+2026-04-07T14:01:03.4813599Z > Task :app:generateDebugResValues
+2026-04-07T14:01:03.5832519Z > Task :app:checkDebugAarMetadata FAILED
+2026-04-07T14:01:03.5864464Z > Task :app:mapDebugSourceSetPaths
+2026-04-07T14:01:03.6807644Z 
+2026-04-07T14:01:03.6808120Z FAILURE: Build failed with an exception.
+2026-04-07T14:01:03.6808518Z 
+2026-04-07T14:01:03.6808809Z * What went wrong:
+2026-04-07T14:01:03.6809254Z Execution failed for task ':app:checkDebugAarMetadata'.
+2026-04-07T14:01:03.6810235Z > A failure occurred while executing com.android.build.gradle.internal.tasks.CheckAarMetadataWorkAction
+2026-04-07T14:01:03.6811224Z    > An issue was found when checking AAR metadata:
+2026-04-07T14:01:03.6811675Z      
+2026-04-07T14:01:03.6812521Z        1.  Dependency 'io.github.Rosemoe.sora-editor:language-textmate:0.23.3' requires core library desugaring to be enabled
+2026-04-07T14:01:03.6813458Z            for :app.
+2026-04-07T14:01:03.6813747Z      
+2026-04-07T14:01:03.6816930Z            See https://developer.android.com/studio/write/java8-support.html for more
+2026-04-07T14:01:03.6817711Z 4 actionable tasks: 4 executed
+2026-04-07T14:01:03.6819549Z            details.
+2026-04-07T14:01:03.6820759Z 
+2026-04-07T14:01:03.6822153Z * Try:
+2026-04-07T14:01:03.6824181Z > Run with --stacktrace option to get the stack trace.
+2026-04-07T14:01:03.6824822Z > Run with --info or --debug option to get more log output.
+2026-04-07T14:01:03.6825392Z > Run with --scan to get full insights.
+2026-04-07T14:01:03.6825878Z > Get more help at https://help.gradle.org.
+2026-04-07T14:01:03.6826225Z 
+2026-04-07T14:01:03.6826368Z BUILD FAILED in 1m 12s
+2026-04-07T14:01:04.0766783Z ##[error]Process completed with exit code 1.
