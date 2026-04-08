@@ -3,102 +3,148 @@ package com.kumbidi.androvibe.data.local
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.eclipse.jgit.api.Git
 import java.io.File
-import java.io.IOException
+
+data class FileNode(
+    val name: String,
+    val absolutePath: String,
+    val isDirectory: Boolean,
+    val children: List<FileNode> = emptyList(),
+    val depth: Int = 0
+)
 
 class FileSystemManager(private val context: Context) {
 
-    // Ensures we stay entirely inside the App's isolated sandbox
-    private val rootSandboxDir: File by lazy {
+    val projectsRoot: File by lazy {
         val dir = context.getExternalFilesDir("Projects")
             ?: context.getDir("Projects", Context.MODE_PRIVATE)
-        if (!dir.exists()) {
-            dir.mkdirs()
-        }
+        if (!dir.exists()) dir.mkdirs()
         dir
     }
 
-    /**
-     * Lists all projects in the sandbox.
-     */
+    // ── Project operations ───────────────────────────────────────
     fun listProjects(): List<File> {
-        return rootSandboxDir.listFiles()?.filter { it.isDirectory } ?: emptyList()
+        return projectsRoot.listFiles()?.filter { it.isDirectory }?.sortedBy { it.name } ?: emptyList()
     }
 
-    /**
-     * Creates an empty local project directory.
-     */
-    suspend fun createProject(projectName: String): Boolean = withContext(Dispatchers.IO) {
-        val newProj = File(rootSandboxDir, projectName)
-        if (newProj.exists()) {
-            return@withContext false
+    suspend fun createProject(name: String): Result<File> = withContext(Dispatchers.IO) {
+        val sanitized = name.replace(Regex("[^a-zA-Z0-9_\\-.]"), "_")
+        val dir = File(projectsRoot, sanitized)
+        if (dir.exists()) return@withContext Result.failure(Exception("Project '$sanitized' already exists"))
+        if (dir.mkdirs()) Result.success(dir) else Result.failure(Exception("Failed to create directory"))
+    }
+
+    suspend fun deleteProject(name: String): Boolean = withContext(Dispatchers.IO) {
+        val dir = File(projectsRoot, name)
+        if (!dir.exists()) return@withContext false
+        dir.deleteRecursively()
+    }
+
+    // ── File tree ────────────────────────────────────────────────
+    fun getFileTree(projectName: String): List<FileNode> {
+        val root = File(projectsRoot, projectName)
+        if (!root.exists()) return emptyList()
+        return flattenTree(root, 0)
+    }
+
+    private fun flattenTree(dir: File, depth: Int): List<FileNode> {
+        val result = mutableListOf<FileNode>()
+        val children = dir.listFiles()?.sortedWith(compareBy({ !it.isDirectory }, { it.name })) ?: return result
+        for (child in children) {
+            if (child.name.startsWith(".")) continue // hide dotfiles
+            result.add(FileNode(child.name, child.absolutePath, child.isDirectory, depth = depth))
+            if (child.isDirectory) {
+                result.addAll(flattenTree(child, depth + 1))
+            }
         }
-        return@withContext newProj.mkdirs()
+        return result
     }
 
-    /**
-     * Clones a repository into the sandbox using JGit.
-     */
-    suspend fun cloneRepository(repoUrl: String, projectName: String): Result<File> = withContext(Dispatchers.IO) {
-        try {
-            val targetDir = File(rootSandboxDir, projectName)
-            if (targetDir.exists() && targetDir.listFiles()?.isNotEmpty() == true) {
-                return@withContext Result.failure(Exception("Directory already exists and is not empty"))
-            }
-            
-            Git.cloneRepository()
-                .setURI(repoUrl)
-                .setDirectory(targetDir)
-                .call()
-                .close()
-                
-            Result.success(targetDir)
-        } catch (e: Exception) {
-            Result.failure(e)
+    // ── File CRUD (sandboxed) ────────────────────────────────────
+    fun readFile(projectName: String, relativePath: String): Result<String> {
+        val projectDir = File(projectsRoot, projectName)
+        val target = File(projectDir, relativePath).canonicalFile
+        if (!target.absolutePath.startsWith(projectDir.canonicalPath)) {
+            return Result.failure(SecurityException("Path escapes sandbox"))
         }
-    }
-
-    /**
-     * Reads a file. Ensure it does not escape the sandbox (no ../ attacks).
-     */
-    suspend fun readFile(relativePath: String, projectName: String): Result<String> = withContext(Dispatchers.IO) {
-        try {
-            val projectDir = File(rootSandboxDir, projectName)
-            val targetFile = File(projectDir, relativePath).canonicalFile
-            
-            // Security check to prevent Sandbox Escaping
-            if (!targetFile.absolutePath.startsWith(projectDir.canonicalPath)) {
-                return@withContext Result.failure(SecurityException("Attempt to access file outside sandbox"))
-            }
-
-            if (!targetFile.exists() || !targetFile.isFile) {
-                return@withContext Result.failure(Exception("File does not exist or is a directory"))
-            }
-
-            Result.success(targetFile.readText())
-        } catch (e: Exception) {
-            Result.failure(e)
+        if (!target.exists() || !target.isFile) {
+            return Result.failure(Exception("File not found: $relativePath"))
         }
+        return Result.success(target.readText())
     }
 
-    /**
-     * Writes to a file, creating it if it doesn't exist.
-     */
-    suspend fun writeFile(relativePath: String, projectName: String, content: String): Result<Unit> = withContext(Dispatchers.IO) {
+    fun writeFile(projectName: String, relativePath: String, content: String): Result<Unit> {
+        val projectDir = File(projectsRoot, projectName)
+        val target = File(projectDir, relativePath).canonicalFile
+        if (!target.absolutePath.startsWith(projectDir.canonicalPath)) {
+            return Result.failure(SecurityException("Path escapes sandbox"))
+        }
+        target.parentFile?.mkdirs()
+        target.writeText(content)
+        return Result.success(Unit)
+    }
+
+    fun createFile(projectName: String, relativePath: String): Result<Unit> {
+        val projectDir = File(projectsRoot, projectName)
+        val target = File(projectDir, relativePath).canonicalFile
+        if (!target.absolutePath.startsWith(projectDir.canonicalPath)) {
+            return Result.failure(SecurityException("Path escapes sandbox"))
+        }
+        target.parentFile?.mkdirs()
+        target.createNewFile()
+        return Result.success(Unit)
+    }
+
+    fun createFolder(projectName: String, relativePath: String): Result<Unit> {
+        val projectDir = File(projectsRoot, projectName)
+        val target = File(projectDir, relativePath).canonicalFile
+        if (!target.absolutePath.startsWith(projectDir.canonicalPath)) {
+            return Result.failure(SecurityException("Path escapes sandbox"))
+        }
+        target.mkdirs()
+        return Result.success(Unit)
+    }
+
+    fun deleteFile(projectName: String, relativePath: String): Result<Unit> {
+        val projectDir = File(projectsRoot, projectName)
+        val target = File(projectDir, relativePath).canonicalFile
+        if (!target.absolutePath.startsWith(projectDir.canonicalPath)) {
+            return Result.failure(SecurityException("Path escapes sandbox"))
+        }
+        if (target.isDirectory) target.deleteRecursively() else target.delete()
+        return Result.success(Unit)
+    }
+
+    fun renameFile(projectName: String, oldPath: String, newName: String): Result<Unit> {
+        val projectDir = File(projectsRoot, projectName)
+        val source = File(projectDir, oldPath).canonicalFile
+        if (!source.absolutePath.startsWith(projectDir.canonicalPath)) {
+            return Result.failure(SecurityException("Path escapes sandbox"))
+        }
+        val dest = File(source.parentFile, newName)
+        if (source.renameTo(dest)) return Result.success(Unit)
+        return Result.failure(Exception("Rename failed"))
+    }
+
+    // ── Export project to a target directory ─────────────────────
+    suspend fun exportProject(projectName: String, targetDir: File): Result<Unit> = withContext(Dispatchers.IO) {
+        val source = File(projectsRoot, projectName)
+        if (!source.exists()) return@withContext Result.failure(Exception("Project not found"))
         try {
-            val projectDir = File(rootSandboxDir, projectName)
-            val targetFile = File(projectDir, relativePath).canonicalFile
-
-            // Security check
-            if (!targetFile.absolutePath.startsWith(projectDir.canonicalPath)) {
-                return@withContext Result.failure(SecurityException("Attempt to access file outside sandbox"))
-            }
-
-            targetFile.parentFile?.mkdirs()
-            targetFile.writeText(content)
+            source.copyRecursively(File(targetDir, projectName), overwrite = true)
             Result.success(Unit)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // ── Import folder into project ──────────────────────────────
+    suspend fun importFolder(sourceDir: File, projectName: String): Result<Unit> = withContext(Dispatchers.IO) {
+        val dest = File(projectsRoot, projectName)
+        try {
+            sourceDir.copyRecursively(dest, overwrite = true)
+            Result.success(Unit)
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }

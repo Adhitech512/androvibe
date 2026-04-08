@@ -10,7 +10,7 @@ class AiSetupManager(context: Context) {
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
         .build()
 
-    private val sharedPreferences = EncryptedSharedPreferences.create(
+    private val prefs = EncryptedSharedPreferences.create(
         context,
         "ai_secure_prefs",
         masterKey,
@@ -18,32 +18,48 @@ class AiSetupManager(context: Context) {
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
+    // ── Setup State ──────────────────────────────────────────────
     fun hasCompletedSetup(): Boolean {
-        // Return true if at least one API is configured
         return getGeminiApiKey() != null || getOllamaServerUrl() != null
     }
 
-    fun saveGeminiConfig(apiKey: String, modelName: String = "gemini-1.5-pro") {
-        sharedPreferences.edit()
+    fun getActiveProvider(): String {
+        return prefs.getString("active_provider", "gemini") ?: "gemini"
+    }
+
+    fun setActiveProvider(provider: String) {
+        prefs.edit().putString("active_provider", provider).apply()
+    }
+
+    // ── Gemini ───────────────────────────────────────────────────
+    fun saveGeminiConfig(apiKey: String, model: String) {
+        prefs.edit()
             .putString("gemini_api_key", apiKey)
-            .putString("gemini_model", modelName)
+            .putString("gemini_model", model)
+            .putString("active_provider", "gemini")
             .apply()
     }
 
-    fun getGeminiApiKey(): String? = sharedPreferences.getString("gemini_api_key", null)
-    fun getGeminiModel(): String = sharedPreferences.getString("gemini_model", "gemini-1.5-pro") ?: "gemini-1.5-pro"
+    fun getGeminiApiKey(): String? = prefs.getString("gemini_api_key", null)
 
-    fun saveOllamaConfig(url: String, modelName: String) {
-        sharedPreferences.edit()
+    fun getGeminiModel(): String =
+        prefs.getString("gemini_model", "gemini-2.0-flash") ?: "gemini-2.0-flash"
+
+    // ── Ollama ───────────────────────────────────────────────────
+    fun saveOllamaConfig(url: String, model: String) {
+        prefs.edit()
             .putString("ollama_url", url)
-            .putString("ollama_model", modelName)
+            .putString("ollama_model", model)
+            .putString("active_provider", "ollama")
             .apply()
     }
 
-    fun getOllamaServerUrl(): String? = sharedPreferences.getString("ollama_url", null)
-    fun getOllamaModel(): String? = sharedPreferences.getString("ollama_model", null)
-    
-    fun clearConfig() {
-        sharedPreferences.edit().clear().apply()
+    fun getOllamaServerUrl(): String? = prefs.getString("ollama_url", null)
+
+    fun getOllamaModel(): String? = prefs.getString("ollama_model", null)
+
+    // ── Reset ────────────────────────────────────────────────────
+    fun clearAll() {
+        prefs.edit().clear().apply()
     }
 }

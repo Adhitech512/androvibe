@@ -3,10 +3,14 @@ package com.kumbidi.androvibe.terminal
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.BufferedReader
 import java.io.File
-import java.io.FileOutputStream
-import java.net.HttpURLConnection
-import java.net.URL
+import java.io.InputStreamReader
+
+data class CommandResult(
+    val output: String,
+    val exitCode: Int
+)
 
 class TerminalManager(private val context: Context) {
 
@@ -14,96 +18,130 @@ class TerminalManager(private val context: Context) {
         context.getDir("rootfs", Context.MODE_PRIVATE)
     }
 
+    private val binDir: File by lazy {
+        context.getDir("bin", Context.MODE_PRIVATE)
+    }
+
     private val prootBinary: File by lazy {
-        File(context.getDir("bin", Context.MODE_PRIVATE), "proot")
+        File(binDir, "proot")
     }
 
-    /**
-     * Checks if the PRoot and rootfs are already installed.
-     */
-    fun isTerminalReady(): Boolean {
-        // Simple check to see if the basic directories of linux rootfs exist
-        val binDir = File(rootfsDir, "bin")
-        return binDir.exists() && prootBinary.exists()
+    fun isBootstrapped(): Boolean {
+        return File(rootfsDir, "bin").exists() && prootBinary.exists()
     }
 
-    /**
-     * Downloads a basic Alpine Linux rootfs tarball and the proot binary.
-     * This makes the app fully standalone as requested.
-     */
-    suspend fun bootstrapEnvironment(
-        onProgress: (Int) -> Unit
+    // ── Execute a command in the app sandbox shell ───────────────
+    suspend fun executeCommand(
+        command: String,
+        workingDir: File? = null
+    ): CommandResult = withContext(Dispatchers.IO) {
+        try {
+            val pb = ProcessBuilder("sh", "-c", command)
+            if (workingDir != null && workingDir.exists()) {
+                pb.directory(workingDir)
+            }
+            pb.redirectErrorStream(true)
+
+            val process = pb.start()
+            val reader = BufferedReader(InputStreamReader(process.inputStream))
+            val output = StringBuilder()
+            var line: String?
+            while (reader.readLine().also { line = it } != null) {
+                output.appendLine(line)
+            }
+            val exitCode = process.waitFor()
+            CommandResult(output.toString().trimEnd(), exitCode)
+        } catch (e: Exception) {
+            CommandResult("Error: ${e.message}", -1)
+        }
+    }
+
+    // ── Execute inside PRoot if bootstrapped ─────────────────────
+    suspend fun executeInProot(
+        command: String,
+        workingDir: File? = null
+    ): CommandResult = withContext(Dispatchers.IO) {
+        if (!isBootstrapped()) {
+            return@withContext CommandResult("PRoot not bootstrapped. Run bootstrap first.", -1)
+        }
+        try {
+            val prootCmd = "${prootBinary.absolutePath} --link2symlink -0 " +
+                "-r ${rootfsDir.absolutePath} " +
+                "-b /dev -b /sys -b /proc " +
+                "-w /root " +
+                "/bin/sh -c \"$command\""
+
+            val pb = ProcessBuilder("sh", "-c", prootCmd)
+            if (workingDir != null && workingDir.exists()) {
+                pb.directory(workingDir)
+            }
+            pb.redirectErrorStream(true)
+
+            val process = pb.start()
+            val reader = BufferedReader(InputStreamReader(process.inputStream))
+            val output = StringBuilder()
+            var line: String?
+            while (reader.readLine().also { line = it } != null) {
+                output.appendLine(line)
+            }
+            val exitCode = process.waitFor()
+            CommandResult(output.toString().trimEnd(), exitCode)
+        } catch (e: Exception) {
+            CommandResult("Error: ${e.message}", -1)
+        }
+    }
+
+    // ── Bootstrap PRoot Ubuntu/Alpine ────────────────────────────
+    suspend fun bootstrap(
+        onProgress: (String) -> Unit
     ): Result<Unit> = withContext(Dispatchers.IO) {
         try {
             if (!rootfsDir.exists()) rootfsDir.mkdirs()
-            val binDir = context.getDir("bin", Context.MODE_PRIVATE)
 
-            // 1. Download Alpine rootfs (example architecture link, would dynamically pick based on ABI)
-            val rootfsUrl = "https://dl-cdn.alpinelinux.org/alpine/v3.19/releases/aarch64/alpine-minirootfs-3.19.1-aarch64.tar.gz"
+            onProgress("Detecting CPU architecture...")
+            val arch = System.getProperty("os.arch") ?: "aarch64"
+            val alpineArch = if (arch.contains("aarch64") || arch.contains("arm64")) "aarch64" else "x86_64"
+
+            // Download Alpine rootfs
+            onProgress("Downloading Alpine Linux rootfs ($alpineArch)...")
+            val rootfsUrl = "https://dl-cdn.alpinelinux.org/alpine/v3.19/releases/$alpineArch/alpine-minirootfs-3.19.1-$alpineArch.tar.gz"
             val tarFile = File(context.cacheDir, "rootfs.tar.gz")
-            
-            downloadFile(rootfsUrl, tarFile, onProgress = { progress -> 
-                onProgress((progress * 0.5f).toInt()) // First 50%
-            })
 
-            // 2. Download statically compiled proot binary for Android
-            // Assuming we host a reliable static proot release or use termux-packages repo
-            val prootUrl = "https://github.com/proot-me/proot/releases/download/v5.3.0/proot-v5.3.0-aarch64-static"
-            downloadFile(prootUrl, prootBinary)
-            prootBinary.setExecutable(true)
-            
-            onProgress(60)
+            downloadFile(rootfsUrl, tarFile)
+            onProgress("Extracting rootfs...")
 
-            // 3. Extract rootfs using Android's built-in toybox tar
-            val process = ProcessBuilder("tar", "-xf", tarFile.absolutePath, "-C", rootfsDir.absolutePath)
+            val extractProcess = ProcessBuilder("tar", "-xf", tarFile.absolutePath, "-C", rootfsDir.absolutePath)
                 .redirectErrorStream(true)
                 .start()
-            
-            val exitCode = process.waitFor()
-            if (exitCode != 0) {
-                return@withContext Result.failure(Exception("Tar extraction failed with code: $exitCode"))
-            }
-            
-            tarFile.delete() // Clean up
+            extractProcess.waitFor()
+            tarFile.delete()
 
-            // 4. Create initial bash wrapper script to launch PRoot
-            val launcherScript = File(binDir, "start_terminal.sh")
-            launcherScript.writeText(
-                """
-                #!/system/bin/sh
-                ${prootBinary.absolutePath} --link2symlink -0 -r ${rootfsDir.absolutePath} -b /dev -b /sys -b /proc -w /root /bin/sh -l
-                """.trimIndent()
-            )
-            launcherScript.setExecutable(true)
+            // Download proot static binary
+            onProgress("Downloading PRoot binary...")
+            val prootUrl = "https://proot.gitlab.io/proot/bin/proot-$alpineArch"
+            downloadFile(prootUrl, prootBinary)
+            prootBinary.setExecutable(true)
 
-            onProgress(100)
+            // Write DNS config so networking works inside proot
+            val resolvConf = File(rootfsDir, "etc/resolv.conf")
+            resolvConf.parentFile?.mkdirs()
+            resolvConf.writeText("nameserver 8.8.8.8\nnameserver 8.8.4.4\n")
+
+            onProgress("Bootstrap complete!")
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    private fun downloadFile(urlStr: String, destination: File, onProgress: ((Int) -> Unit)? = null) {
-        val url = URL(urlStr)
-        val connection = url.openConnection() as HttpURLConnection
-        connection.connect()
-
-        val lengthOfFile = connection.contentLength
-        val input = connection.inputStream
-        val output = FileOutputStream(destination)
-
-        val data = ByteArray(4096)
-        var total: Long = 0
-        var count: Int
-        
-        while (input.read(data).also { count = it } != -1) {
-            total += count.toLong()
-            onProgress?.invoke(((total * 100) / lengthOfFile).toInt())
-            output.write(data, 0, count)
+    private fun downloadFile(urlStr: String, dest: File) {
+        val url = java.net.URL(urlStr)
+        val conn = url.openConnection() as java.net.HttpURLConnection
+        conn.connect()
+        conn.inputStream.use { input ->
+            dest.outputStream().use { output ->
+                input.copyTo(output)
+            }
         }
-
-        output.flush()
-        output.close()
-        input.close()
     }
 }
