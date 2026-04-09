@@ -82,7 +82,8 @@ fun AndroVibeNavigation() {
 fun WorkspaceScreen(projectName: String, onBack: () -> Unit) {
     var selectedTab by remember { mutableStateOf(0) }
 
-    val fsManager = remember { FileSystemManager(androidx.compose.ui.platform.LocalContext.current) }
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val fsManager = remember { FileSystemManager(context) }
     val projectDir = remember { File(fsManager.projectsRoot, projectName) }
 
     Scaffold(

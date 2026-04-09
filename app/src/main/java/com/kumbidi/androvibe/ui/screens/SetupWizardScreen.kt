@@ -177,6 +177,7 @@ private fun ProviderCard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun GeminiConfigForm(viewModel: SetupViewModel) {
     Text("Gemini API Configuration", style = MaterialTheme.typography.titleMedium, color = Text)
